@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "InstaRent.Cart": {
+      "path": "InstaRent.Cart.abpmdl.json"
+    }
+  }
+}
