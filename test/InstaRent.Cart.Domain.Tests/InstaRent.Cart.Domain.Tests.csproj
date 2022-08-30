@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <ProjectReference Include="..\InstaRent.Cart.EntityFrameworkCore.Tests\InstaRent.Cart.EntityFrameworkCore.Tests.csproj" />
   </ItemGroup>
 
 </Project>

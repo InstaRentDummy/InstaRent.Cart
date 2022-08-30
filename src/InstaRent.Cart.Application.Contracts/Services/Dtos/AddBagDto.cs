@@ -12,6 +12,7 @@ namespace InstaRent.Cart.Services
         public double Price { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public List<string> ImageUrls { get; set; }
         public List<string> Tags { get; set; }
 
         [Range(1, int.MaxValue)]

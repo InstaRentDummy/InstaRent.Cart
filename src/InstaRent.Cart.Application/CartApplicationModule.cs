@@ -1,5 +1,6 @@
 ﻿using InstaRent.Cart.Baskets;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Volo.Abp.Application;
@@ -19,15 +20,16 @@ public class CartApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
         context.Services.AddAutoMapperObjectMapper<CartApplicationModule>();
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<CartApplicationModule>(validate: true);
         });
-        ConfigureDistributedCache();
+        ConfigureDistributedCache(configuration);
     }
 
-    private void ConfigureDistributedCache()
+    private void ConfigureDistributedCache(IConfiguration configuration)
     {
         Configure<AbpDistributedCacheOptions>(options =>
         {
@@ -37,7 +39,8 @@ public class CartApplicationModule : AbpModule
                 {
                     return new DistributedCacheEntryOptions
                     {
-                        SlidingExpiration = TimeSpan.FromDays(7)
+                        //SlidingExpiration = TimeSpan.FromDays(7)
+                        SlidingExpiration = TimeSpan.FromDays(Convert.ToDouble(configuration["Redis:Expiration"]))
                     };
                 }
 

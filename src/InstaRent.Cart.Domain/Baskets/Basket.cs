@@ -19,7 +19,7 @@ namespace InstaRent.Cart.Baskets
             Items = new List<BasketItem>();
         }
 
-        public void AddProduct(Guid bagId, string renterId, string bagName, double price, DateTime startDate, DateTime endDate, List<string> tags)
+        public void AddProduct(Guid bagId, string renterId, string bagName, double price, DateTime startDate, DateTime endDate, List<string> imageUrls, List<string> tags)
         {
             //    if (count < 1)
             //    {
@@ -30,7 +30,7 @@ namespace InstaRent.Cart.Baskets
             var item = Items.FirstOrDefault(x => x.BagId == bagId);
             if (item == null)
             {
-                Items.Add(new BasketItem(bagId, renterId, bagName, price, startDate, endDate, tags));
+                Items.Add(new BasketItem(bagId, renterId, bagName, price, startDate, endDate, imageUrls, tags));
             }
             else
             {
@@ -74,7 +74,7 @@ namespace InstaRent.Cart.Baskets
         {
             foreach (var item in cart.Items)
             {
-                AddProduct(item.BagId, item.RenterId, item.BagName, item.Price, item.StartDate, item.EndDate, item.Tags);
+                AddProduct(item.BagId, item.RenterId, item.BagName, item.Price, item.StartDate, item.EndDate, item.ImageUrls, item.Tags);
             }
         }
     }

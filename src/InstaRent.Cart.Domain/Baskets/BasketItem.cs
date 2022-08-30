@@ -12,6 +12,7 @@ namespace InstaRent.Cart.Baskets
         public double Price { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
         public List<string> Tags { get; set; } = new List<string>();
 
         private BasketItem()
@@ -19,7 +20,7 @@ namespace InstaRent.Cart.Baskets
 
         }
 
-        public BasketItem(Guid bagId, string renterId, string bagName, double price, DateTime startDate, DateTime endDate, List<string> tags, int count = 1)
+        public BasketItem(Guid bagId, string renterId, string bagName, double price, DateTime startDate, DateTime endDate, List<string> imageUrls, List<string> tags, int count = 1)
         //public BasketItem(Guid bagId, int count = 1)
         {
             BagId = bagId;
@@ -29,6 +30,7 @@ namespace InstaRent.Cart.Baskets
             Price = price;
             StartDate = startDate;
             EndDate = endDate;
+            ImageUrls = imageUrls;
             Tags = tags;
         }
     }

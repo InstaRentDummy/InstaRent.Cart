@@ -40,7 +40,7 @@ namespace InstaRent.Cart.Services
             //    throw new UserFriendlyException("There is not enough product in stock, sorry :(");
             //}
 
-            basket.AddProduct(input.BagId, input.RenterId, input.BagName, input.Price, input.StartDate, input.EndDate, input.Tags);
+            basket.AddProduct(input.BagId, input.RenterId, input.BagName, input.Price, input.StartDate, input.EndDate, input.ImageUrls, input.Tags);
 
             await _basketRepository.UpdateAsync(basket);
 
