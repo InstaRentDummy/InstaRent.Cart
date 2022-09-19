@@ -2,6 +2,7 @@
 using Volo.Abp;
 using Volo.Abp.Authorization;
 using Volo.Abp.Autofac;
+using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Data;
 using Volo.Abp.Modularity;
 using Volo.Abp.Threading;
@@ -12,7 +13,8 @@ namespace InstaRent.Cart;
     typeof(AbpAutofacModule),
     typeof(AbpTestBaseModule),
     typeof(AbpAuthorizationModule),
-    typeof(CartDomainModule)
+    typeof(CartDomainModule),
+    typeof(AbpCachingStackExchangeRedisModule)
     )]
 public class CartTestBaseModule : AbpModule
 {

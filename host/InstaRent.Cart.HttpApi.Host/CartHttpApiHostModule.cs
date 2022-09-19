@@ -1,14 +1,15 @@
+using InstaRent.Cart.Baskets;
 using InstaRent.Cart.MultiTenancy;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Steeltoe.Discovery.Client;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Volo.Abp;
@@ -18,7 +19,7 @@ using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
 using Volo.Abp.Caching.StackExchangeRedis;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+//using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
 //using Volo.Abp.PermissionManagement.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace InstaRent.Cart;
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(AbpEntityFrameworkCoreSqlServerModule),
+    //typeof(AbpEntityFrameworkCoreSqlServerModule),
     //typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     //typeof(AbpPermissionManagementEntityFrameworkCoreModule),
     //typeof(AbpSettingManagementEntityFrameworkCoreModule),
@@ -73,19 +74,29 @@ public class CartHttpApiHostModule : AbpModule
             });
         }
 
-        context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"],
-            new Dictionary<string, string>
-            {
-                {"Cart", "Cart API"}
-            },
-            options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
-                options.HideAbpEndpoints();
-            });
+        //context.Services.AddAbpSwaggerGenWithOAuth(
+        //    configuration["AuthServer:Authority"],
+        //    new Dictionary<string, string>
+        //    {
+        //        {"Cart", "Cart API"}
+        //    },
+        //    options =>
+        //    {
+        //        options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart API", Version = "v1" });
+        //        options.DocInclusionPredicate((docName, description) => true);
+        //        options.CustomSchemaIds(type => type.FullName);
+        //        options.HideAbpEndpoints();
+        //    });
+
+        context.Services.AddAbpSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                    options.CustomSchemaIds(type => type.FullName);
+                    options.HideAbpEndpoints();
+                }
+            );
 
         //Configure<AbpLocalizationOptions>(options =>
         //{
@@ -110,13 +121,13 @@ public class CartHttpApiHostModule : AbpModule
         //    options.Languages.Add(new LanguageInfo("es", "es", "Español"));
         //});
 
-        context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "Cart";
-            });
+        //context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options =>
+        //    {
+        //        options.Authority = configuration["AuthServer:Authority"];
+        //        options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
+        //        options.Audience = "Cart";
+        //    });
 
         Configure<AbpDistributedCacheOptions>(options =>
         {
@@ -129,6 +140,9 @@ public class CartHttpApiHostModule : AbpModule
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Cart-Protection-Keys");
         }
+        ConfigureDistributedCache(Convert.ToDouble(configuration["Redis:Expiration"]));
+
+        context.Services.AddDiscoveryClient(configuration);
 
         context.Services.AddCors(options =>
         {
@@ -150,24 +164,25 @@ public class CartHttpApiHostModule : AbpModule
         });
     }
 
-    //private void ConfigureDistributedCache()
-    //{
-    //    Configure<AbpDistributedCacheOptions>(options =>
-    //    {
-    //        options.CacheConfigurators.Add(cacheName =>
-    //        {
-    //            if (cacheName == CacheNameAttribute.GetCacheName(typeof(Basket)))
-    //            {
-    //                return new DistributedCacheEntryOptions
-    //                {
-    //                    SlidingExpiration = TimeSpan.FromDays(7)
-    //                };
-    //            }
+    private void ConfigureDistributedCache(double slidingexpiration)
+    { 
+        Configure<AbpDistributedCacheOptions>(options =>
+        {
+            options.CacheConfigurators.Add(cacheName =>
+            {
+                if (cacheName == CacheNameAttribute.GetCacheName(typeof(Basket)))
+                {
+                    return new DistributedCacheEntryOptions
+                    {
+                        SlidingExpiration = TimeSpan.FromDays(slidingexpiration)
+                    };
+                };
+                
 
-    //            return null;
-    //        });
-    //    });
-    //}
+                return null;
+            });
+        });
+    }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
@@ -188,6 +203,7 @@ public class CartHttpApiHostModule : AbpModule
         app.UseStaticFiles();
         app.UseRouting();
         app.UseCors();
+        app.UseDiscoveryClient();
         app.UseAuthentication();
         if (MultiTenancyConsts.IsEnabled)
         {
@@ -196,15 +212,21 @@ public class CartHttpApiHostModule : AbpModule
         app.UseAbpRequestLocalization();
         app.UseAuthorization();
         app.UseSwagger();
+        //app.UseAbpSwaggerUI(options =>
+        //{
+        //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
+
+        //    var configuration = context.GetConfiguration();
+        //    options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+        //    options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
+        //    options.OAuthScopes("Cart");
+        //});
+
         app.UseAbpSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
-
-            var configuration = context.GetConfiguration();
-            options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
-            options.OAuthScopes("Cart");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API");
         });
+
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

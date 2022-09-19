@@ -3,8 +3,8 @@
 namespace InstaRent.Cart;
 
 [DependsOn(
-    typeof(CartApplicationModule),
-    typeof(CartDomainTestModule)
+    typeof(CartDomainTestModule),
+    typeof(CartApplicationModule)
     )]
 public class CartApplicationTestModule : AbpModule
 {

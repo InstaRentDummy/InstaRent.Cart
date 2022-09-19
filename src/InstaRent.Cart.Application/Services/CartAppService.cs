@@ -77,6 +77,7 @@ namespace InstaRent.Cart.Services
                     price = basketItem.Price,
                     StartDate = basketItem.StartDate,
                     EndDate = basketItem.EndDate,
+                    ImageUrls = basketItem.ImageUrls,
                     Tags = basketItem.Tags
                 });
             }

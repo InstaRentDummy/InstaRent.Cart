@@ -9,7 +9,7 @@ namespace InstaRent.Cart.Carts
     [RemoteService(Name = "cart")]
     [Area("cart")]
     [ControllerName("Basket")]
-    [Route("api/cart/basket")]
+    [Route("api/cart")]
     public class BasketController : AbpController, ICartAppService
     {
         private readonly ICartAppService _cartAppService;

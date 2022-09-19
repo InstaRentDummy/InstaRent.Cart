@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+	 <ProjectReference Include="..\InstaRent.Cart.TestBase\InstaRent.Cart.TestBase.csproj" />
   </ItemGroup>
 
 </Project>

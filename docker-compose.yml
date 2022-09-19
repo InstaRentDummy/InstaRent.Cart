@@ -1,25 +1,22 @@
 version: '3.4'
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server
-    volumes:
-      - dbdata:/var/opt/mssql
-  
-  identity-server:
-    build:
-      context: ../../
-      dockerfile: templates/service/host/IdentityServerHost/Dockerfile
-    depends_on:
-      - sqlserver      
+  redis:
+    container_name: redis
+    image: redis:alpine
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+    networks: 
+      - instarent-network
+      
   
   cart:
     build:
       context: ../../
-      dockerfile: templates/service/host/InstaRent.Cart.Host/Dockerfile
+      dockerfile: /host/InstaRent.Cart.HttpApi.Host/Dockerfile
     depends_on:
-      - sqlserver
-      - identity-server
+      - redis 
 
-volumes:
-  dbdata:
+networks:
+  instarent-network:
+    external: true

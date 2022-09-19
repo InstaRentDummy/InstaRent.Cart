@@ -1,0 +1,21 @@
+variables:
+  BUILD_IMAGE: "mcr.microsoft.com/dotnet/sdk:6.0"
+  RUNTIME_IMAGE: "mcr.microsoft.com/dotnet/aspnet:6.0"
+
+stages:
+  - build
+  - test
+
+Build Stage:
+  stage: build
+  image: $BUILD_IMAGE
+  script:
+    - 'dotnet restore -nowarn:msb3202,nu1503 ./host/InstaRent.Cart.HttpApi.Host'
+    - 'dotnet build ./host/InstaRent.Cart.HttpApi.Host'
+    - 'dotnet publish ./host/InstaRent.Cart.HttpApi.Host'
+
+Test Stage:
+  stage: test
+  image: $BUILD_IMAGE
+  script:
+    - 'dotnet test --no-restore'

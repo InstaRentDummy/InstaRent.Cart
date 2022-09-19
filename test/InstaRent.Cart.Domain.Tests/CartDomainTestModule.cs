@@ -1,4 +1,4 @@
-﻿using InstaRent.Cart.EntityFrameworkCore;
+﻿ 
 using Volo.Abp.Modularity;
 
 namespace InstaRent.Cart;
@@ -8,7 +8,7 @@ namespace InstaRent.Cart;
  * database independent anyway.
  */
 [DependsOn(
-    typeof(CartEntityFrameworkCoreTestModule)
+    typeof(CartTestBaseModule)
     )]
 public class CartDomainTestModule : AbpModule
 {
