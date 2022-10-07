@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using Steeltoe.Discovery.Client;
 using System;
 using System.IO;
 using System.Linq;
 using Volo.Abp;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
@@ -105,6 +105,8 @@ public class CartHttpApiHostModule : AbpModule
                     .AllowCredentials();
             });
         });
+
+        Configure<AbpAntiForgeryOptions>(options => { options.AutoValidate = false; });
     }
 
     private void ConfigureDistributedCache(double slidingexpiration)
