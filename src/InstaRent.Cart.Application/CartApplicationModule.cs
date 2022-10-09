@@ -39,11 +39,11 @@ public class CartApplicationModule : AbpModule
             options.KeyPrefix = "InstaRent:";
         });
 
-        var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
+       // var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
 
-        context.Services
-            .AddDataProtection()
-            .PersistKeysToStackExchangeRedis(redis, "InstaRent-Protection-Keys");
+        //context.Services
+        //    .AddDataProtection()
+        //    .PersistKeysToStackExchangeRedis(redis, "InstaRent-Protection-Keys");
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
