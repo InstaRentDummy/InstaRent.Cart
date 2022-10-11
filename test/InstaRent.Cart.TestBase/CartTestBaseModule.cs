@@ -13,7 +13,7 @@ namespace InstaRent.Cart;
     typeof(AbpAutofacModule),
     typeof(AbpTestBaseModule),
     typeof(AbpAuthorizationModule),
-    typeof(CartDomainModule),
+    //typeof(CartDomainModule),
     typeof(AbpCachingStackExchangeRedisModule)
     )]
 public class CartTestBaseModule : AbpModule

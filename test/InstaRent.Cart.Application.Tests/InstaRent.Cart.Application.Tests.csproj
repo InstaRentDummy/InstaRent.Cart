@@ -9,10 +9,10 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\InstaRent.Cart.Application\InstaRent.Cart.Application.csproj" />
-
-
-		<ProjectReference Include="..\InstaRent.Cart.Domain.Tests\InstaRent.Cart.Domain.Tests.csproj" />
+		<ProjectReference Include="..\InstaRent.Cart.TestBase\InstaRent.Cart.TestBase.csproj" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="Shouldly" Version="4.1.0" />
+		<PackageReference Include="xunit" Version="2.4.2" />
 	</ItemGroup>
 
 </Project>

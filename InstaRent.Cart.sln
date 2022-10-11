@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstaRent.Cart.Application.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstaRent.Cart.TestBase", "test\InstaRent.Cart.TestBase\InstaRent.Cart.TestBase.csproj", "{C934D058-6EF0-424D-B5C8-CEBD29BADD89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstaRent.Cart.Domain.Tests", "test\InstaRent.Cart.Domain.Tests\InstaRent.Cart.Domain.Tests.csproj", "{5D7C88F1-0790-446C-B618-A3BB7CE5B798}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,10 +81,6 @@ Global
 		{C934D058-6EF0-424D-B5C8-CEBD29BADD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C934D058-6EF0-424D-B5C8-CEBD29BADD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C934D058-6EF0-424D-B5C8-CEBD29BADD89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D7C88F1-0790-446C-B618-A3BB7CE5B798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D7C88F1-0790-446C-B618-A3BB7CE5B798}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D7C88F1-0790-446C-B618-A3BB7CE5B798}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D7C88F1-0790-446C-B618-A3BB7CE5B798}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,7 +97,6 @@ Global
 		{BE39FD00-745B-4049-8161-FC129817CBE4} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 		{D6D12D39-47B3-4B21-9696-7C942AA52BC2} = {C6357B9F-AA95-40E1-AB50-FDDD659B7AA9}
 		{C934D058-6EF0-424D-B5C8-CEBD29BADD89} = {C6357B9F-AA95-40E1-AB50-FDDD659B7AA9}
-		{5D7C88F1-0790-446C-B618-A3BB7CE5B798} = {C6357B9F-AA95-40E1-AB50-FDDD659B7AA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4324B3B4-B60B-4E3C-91D8-59576B4E26DD}
