@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: cartservice
-        image: instarent.azurecr.io/instarent-cart:latest
+        image: instarent.azurecr.io/instarentcart:latest
         ports:
         - containerPort: 80
         - containerPort: 443
