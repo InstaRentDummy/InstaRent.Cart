@@ -30,6 +30,7 @@ spec:
       containers:
       - name: cartservice
         image: instarent.azurecr.io/instarentcart:latest
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 80
         - containerPort: 443
